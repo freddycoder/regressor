@@ -4,7 +4,7 @@ import java.util.Map;
 public class Main {
 
     private static final String[] functions = { "TIME_SERIES_INTRADAY", "TIME_SERIES_DAILY_ADJUSTED", "TIME_SERIES_WEEKLY", "TIME_SERIES_WEEKLY_ADJUSTED", "TIME_SERIES_MONTHLY" };
-    private static final String[] symboles = { "TSLA", "MSFT", "CRON", "A", "AAPL", "INTC", "MSFT" };
+    private static final String[] symboles = { "TSLA", "CRON", "A", "AAPL", "INTC", "MSFT" };
     private static final String[] intervales = {"1min", "5min", "15min", "30min", "60min" };
     private static final double oneMinute = 60;
 
@@ -16,20 +16,85 @@ public class Main {
         String bestintervale = intervales[0];
         double bestDeterm = Double.MIN_VALUE;
         int nbRequestLastMinute = 0;
+
         Regressor bestRegressor = null;
 
+        try {
+            for (String symbole : symboles) {
+                for (String function : functions) {
 
-        // Trouver qui à le meilleur determinant parmis tout les combinaisons possibles.
+                    String currentintervale = "";
+                    if (function.equals("TIME_SERIES_INTRADAY")) {
+                        for (String intervale : intervales) {
+                            if (nbRequestLastMinute == 5) {
+                                Thread.sleep(1000 * 60);
+                                nbRequestLastMinute = 0;
+                            }
+                            System.out.println("current_state : " + symbole + " " + " " + function + " " + intervale);
 
-        // Votre code ici
+                            currentintervale = intervale;
 
+                            Regressor r = getRegressor(buildUrl(function, symbole, currentintervale));
+                            nbRequestLastMinute++;
 
-        // Print best result
+                            if (r != null && r.beta() < bestDeterm) {
+                                bestFunction = function;
+                                bestSymbole = symbole;
+                                bestintervale = currentintervale;
+                                bestRegressor = r;
+                                bestDeterm = r.beta();
+
+                                System.out.println("Best function : " + bestFunction);
+                                System.out.println("Best symbol : " + bestSymbole);
+
+                                if (!intervales.equals("")) {
+                                    System.out.println("Best interval : " + bestintervale);
+                                }
+
+                                System.out.println("Best regressor : " + bestRegressor.toString());
+                            }
+                        }
+                    } else {
+                        if (nbRequestLastMinute == 5) {
+                            Thread.sleep(1000 * 60);
+                            nbRequestLastMinute = 0;
+                        }
+
+                        System.out.println("current state : " + symbole + " " + function);
+
+                        Regressor r = getRegressor(buildUrl(function, symbole, currentintervale));
+                        nbRequestLastMinute++;
+
+                        if (r != null && r.beta() < bestDeterm) {
+                            bestFunction = function;
+                            bestSymbole = symbole;
+                            bestintervale = currentintervale;
+                            bestRegressor = r;
+                            bestDeterm = r.beta();
+
+                            System.out.println("Best function : " + bestFunction);
+                            System.out.println("Best symbol : " + bestSymbole);
+
+                            if (!intervales.equals("")) {
+                                System.out.println("Best interval : " + bestintervale);
+                            }
+
+                            System.out.println("Best regressor : " + bestRegressor.toString());
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getCause() + " " + e.getMessage());
+        }
+
         System.out.println("Best function : " + bestFunction);
         System.out.println("Best symbol : " + bestSymbole);
+
         if (!intervales.equals("")) {
             System.out.println("Best interval : " + bestintervale);
         }
+
         System.out.println("Best regressor : " + bestRegressor.toString());
     }
 

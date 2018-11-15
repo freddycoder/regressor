@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
 
-//https://www.baeldung.com/java-http-request
+// https://www.baeldung.com/java-http-request
 
 public class APICaller {
 	public static String FetchJSON(Map<String, String> params) {
