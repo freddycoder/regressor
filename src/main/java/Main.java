@@ -3,12 +3,21 @@ import java.util.Map;
 
 public class Main {
 
+    private static final String ALPHAGO_BASE_URI = "https://www.alphavantage.co/query?";
+    private static final String ALPHAGO_AUTHENTIFICATION = "apikey=VFSS3EDI6OQP7TX9";
+    private static final APICaller ALPHAGO_API_CALLER = new APICaller(ALPHAGO_BASE_URI, ALPHAGO_AUTHENTIFICATION);
     private static final String[] functions = { "TIME_SERIES_INTRADAY", "TIME_SERIES_DAILY_ADJUSTED", "TIME_SERIES_WEEKLY", "TIME_SERIES_WEEKLY_ADJUSTED", "TIME_SERIES_MONTHLY" };
     private static final String[] symboles = { "TSLA", "CRON", "A", "AAPL", "INTC", "MSFT" };
     private static final String[] intervales = {"1min", "5min", "15min", "30min", "60min" };
     private static final double oneMinute = 60;
 
+    private static final String XIGNITE_BASE_URI = "globalnews.xignite.com";
+
     public static void main(String[] args) throws Exception {
+        APICaller newsAPI = new APICaller(XIGNITE_BASE_URI, )
+    }
+
+    public void permutationExperiment() {
         // API dcomentation : https://www.alphavantage.co/documentation/
 
         String bestFunction = functions[0];
@@ -107,7 +116,7 @@ public class Main {
     }
 
     public static Regressor getRegressor(Map<String, String> urlParameters) {
-        Parser p = new Parser(APICaller.FetchJSON(urlParameters));
+        Parser p = new Parser(ALPHAGO_API_CALLER.FetchJSON(urlParameters));
 
         try {
             StockEntry se = p.Parse();

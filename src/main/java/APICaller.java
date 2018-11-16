@@ -11,7 +11,15 @@ import java.util.Map.Entry;
 // https://www.baeldung.com/java-http-request
 
 public class APICaller {
-	public static String FetchJSON(Map<String, String> params) {
+	public final String baseURI;
+	public final String authentification;
+
+	public APICaller(String baseURI, String authentification) {
+		this.baseURI = baseURI;
+		this.authentification = authentification;
+	}
+
+	public String FetchJSON(Map<String, String> params) {
 		URL url = null;
 		
 		try {
@@ -63,10 +71,9 @@ public class APICaller {
 		return json;
 	}
 	
-	public static URL BuildUrl(Map<String, String> params) throws MalformedURLException {
-		String baseUri = "https://www.alphavantage.co/query?";
+	public URL BuildUrl(Map<String, String> params) throws MalformedURLException {
 		StringBuilder sb = new StringBuilder();
-		sb.append(baseUri);
+		sb.append(this.baseURI);
 		
 		for (Entry<String, String> kp : params.entrySet()) {
 			sb.append(kp.getKey());
@@ -75,11 +82,8 @@ public class APICaller {
 			sb.append("&");
 		}
 		
-		sb.append("apikey=");
-		sb.append(APIKEY);
+		sb.append(this.authentification);
 		
 		return new URL(sb.toString());
 	}
-	
-	public static String APIKEY = "VFSS3EDI6OQP7TX9";
 }
