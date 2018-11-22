@@ -13,4 +13,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+
+    // https://mvnrepository.com/artifact/com.fasterxml/jackson-module-json-org
+    compile group: 'com.fasterxml', name: 'jackson-module-json-org', version: '0.9.1'
 }

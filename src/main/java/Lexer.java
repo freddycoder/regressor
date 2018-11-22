@@ -66,7 +66,7 @@ public class Lexer {
 	}
 	
 	private void SkipWhiteSpace() {
-		while (!IsEndOfText() && Character.isWhitespace(this.CurrentChar())) {
+		while (!IsEndOfText() && Character.isWhitespace(CurrentChar())) {
 			this.m_position++;
 		}
 	}

@@ -1,19 +1,10 @@
 public class Token {
 	public Token(String content, TokenType type) {
-		this.m_value = new String(content);
-		this.m_type = type;
+		this.value = new String(content);
+		this.type = type;
 	}
-	public String value() {
-		return this.m_value;
-	}
-	public TokenType Type() {
-		return this.m_type;
-	}
-	public String toString() {
-		return "{'" + this.m_value + "': '" + this.m_type + "'}";
-	}
-	private String m_value;
-	private TokenType m_type;
+	public final String value;
+	public final TokenType type;
 }
 
 enum TokenType {
@@ -21,6 +12,9 @@ enum TokenType {
 	CLOSECURLY,
 	STRING,
 	INT,
+	DOUBLE,
+	ARRAY,
+	JSON,
 	COMMA,
 	COLON,
 };
